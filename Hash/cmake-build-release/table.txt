@@ -1,0 +1,2 @@
+Filling factor      Avg. effort found       Max. effort found       Avg. effort not-found       Max. effort not-found
+0.80                          1.00              1.00                      2.00                       3.00
