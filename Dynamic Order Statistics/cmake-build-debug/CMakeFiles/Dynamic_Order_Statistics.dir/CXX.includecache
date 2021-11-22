@@ -1,0 +1,40 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+D:/Facultate/Anul 2/Semestrul 1/AF/Lab7/Dynamic Order Statistics/Profiler.h
+Windows.h
+-
+Shellapi.h
+-
+stdio.h
+-
+string.h
+-
+stdlib.h
+-
+time.h
+-
+typeinfo
+-
+map
+-
+vector
+-
+algorithm
+-
+functional
+-
+string
+-
+
+D:/Facultate/Anul 2/Semestrul 1/AF/Lab7/Dynamic Order Statistics/main.cpp
+bits/stdc++.h
+-
+Profiler.h
+D:/Facultate/Anul 2/Semestrul 1/AF/Lab7/Dynamic Order Statistics/Profiler.h
+
