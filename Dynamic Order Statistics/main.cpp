@@ -1,3 +1,23 @@
+/*
+ * Building the tree requires O(logn) time
+ * To maintain the RB tree property we call the auxiliary procedure to recolour nodes apply rotations when necessary
+ * These operations require at worst O(logn) time but on average it is being done in constant time.
+ *
+ * The selection operation is done in O(logn) time and is proportional to the height of the tree
+ *
+ * The deletion is a bst tree delete function which has a runtime of O(logn)
+ *
+ * The tree structure is an augmented one because the size of the subtrees is also included in the information of each node
+ * This is the information which makes the select operation an efficient one
+ *
+ * Updating the size information does not increase the time complexity of the functions because the sizes are modified dynamically during
+ * the other operations like insert and delete.
+ *
+ * The tree is a self-balancing one which means the height of the tree is kept under control during the operations, but this aspect requires additional operations
+ *
+ * */
+
+
 #include <bits/stdc++.h>
 #include "Profiler.h"
 #define MAX_SIZE 10000
@@ -14,9 +34,9 @@ enum COLOUR {
 };
 bool visited[MAX_SIZE];
 
-int insertComps, insertAss;
-int selectComps, selectAss;
-int deleteComps, deleteAss;
+int insertComparisons, insertAssignments;
+int selectComparisons, selectAssignments;
+int deleteComparisons, deleteAssignments;
 
 typedef struct node {
     int key;
@@ -59,81 +79,81 @@ rbTree *newTree() {
 void leftRotate(rbTree *tree, node *x) {
 
     node *y = x->right;
-    ///insertAss++;
+    insertAssignments++;
     int aux = y->size;
     y->size = x->size;
     x->size = x->size - aux + y->left->size;
     x->right = y->left;
-    ///insertComps++;
+    insertComparisons++;
     if (y->left != tree->NIL) {
         y->left->parent = x;
-        ///insertAss++;
+        insertAssignments++;
     }
-    ///insertAss++;
+    insertAssignments++;
     y->parent = x->parent;
-    ///insertComps++;
+    insertComparisons++;
     if (x->parent == tree->NIL) {
         tree->root = y;
-        ///insertAss++;
+        insertAssignments++;
     } else if (x == x->parent->left) {
         x->parent->left = y;
-        ///insertAss++;
+        insertAssignments++;
     } else {
         x->parent->right = y;
-        ///insertAss++;
+        insertAssignments++;
     }
     y->left = x;
     x->parent = y;
-    ///insertAss++;
+    insertAssignments++;
 
 }
 
 void rightRotate(rbTree *tree, node *x) {
     node *y = x->left;
-    ///insertAss++;
+    insertAssignments++;
     int aux = y->size;
     y->size = x->size;
     x->size = x->size - aux + y->right->size;
     x->left = y->right;
-    ///insertComps++;
+    insertComparisons++;
     if (y->right != tree->NIL) {
         y->right->parent = x;
-        ///insertAss++;
+        insertAssignments++;
     }
 
     y->parent = x->parent;
-    ///insertComps++;
+    insertComparisons++;
     if (x->parent == tree->NIL) {
         tree->root = y;
-        ///insertAss++;
+        insertAssignments++;
     } else {
-        ///insertComps++;
+        insertComparisons++;
         if (x == x->parent->right) {
             x->parent->right = y;
-            ///insertAss++;
+            insertAssignments++;
         } else {
             x->parent->left = y;
-            ///insertAss++;
+            insertAssignments++;
         }
     }
     y->right = x;
-    ///insertAss++;
+    insertAssignments++;
     x->parent = y;
 }
 
 void insertionFixUp(rbTree *tree, node *z) {
     while (z->parent->colour == Red) {
-        ///insertComps++;
+        insertComparisons++;
         if (z->parent == z->parent->parent->left) {
             node *uncle = z->parent->parent->right;
-            ///insertComps++;
+            insertComparisons++;
             if (uncle->colour == Red) {
                 z->parent->colour = Black;
                 uncle->colour = Black;
                 z->parent->parent->colour = Red;
                 z = z->parent->parent;
             } else {
-                ///insertComps++;
+                insertComparisons++;
                 if (z == z->parent->right) {
                     z = z->parent;
                     leftRotate(tree, z);
@@ -144,14 +164,14 @@ void insertionFixUp(rbTree *tree, node *z) {
             }
         } else {
             node *uncle = z->parent->parent->left;
-            ///insertComps++;
+            insertComparisons++;
             if (uncle->colour == Red) {
                 z->parent->colour = Black;
                 uncle->colour = Black;
                 z->parent->parent->colour = Red;
                 z = z->parent->parent;
             } else {
-                ///insertComps++;
+                insertComparisons++;
                 if (z == z->parent->left) {
                     z = z->parent;
                     rightRotate(tree, z);
@@ -169,32 +189,32 @@ void insert(rbTree *tree, node *z) {
     node *parent = tree->NIL;
     node *temp = tree->root;
     while (temp != tree->NIL) {
-        insertComps++;
+        insertComparisons++;
         parent = temp;
         parent->size++;
-        insertComps++;
+        insertComparisons++;
         if (z->key < temp->key){
             temp = temp->left;
-            insertAss++;
+            insertAssignments++;
         }
         else{
             temp = temp->right;
-            insertAss++;
+            insertAssignments++;
         }
     }
     z->parent = parent;
-    insertComps++;
+    insertComparisons++;
     if (parent == tree->NIL) {
-        insertAss++;
+        insertAssignments++;
         tree->root = z;
     } else {
-        insertComps++;
+        insertComparisons++;
         if (z->key < parent->key){
             parent->left = z;
         }
         else{
             parent->right = z;
-            insertAss++;
+            insertAssignments++;
         }
     }
     z->right = tree->NIL;
@@ -204,11 +224,11 @@ void insert(rbTree *tree, node *z) {
 
 node *osSelect(node *root, int i) {
     int aux = root->left->size + 1;
-    selectComps++;
+    selectComparisons++;
     if (i == aux) {
         return root;
     } else {
-        selectComps++;
+        selectComparisons++;
         if (i < aux) {
             return osSelect(root->left, i);
         } else {
@@ -224,62 +244,46 @@ node *minimum(rbTree *tree, node *x) {
     return x;
 }
 
-struct node *deleteNode(rbTree *tree, node *root, int key) {
-    // base case
-    deleteComps++;
+struct node *deleteNode(rbTree *tree, node *root, int key){
+    deleteComparisons++;
     if (root == nullptr)
         return root;
-
-    // If the key to be deleted is
-    // smaller than the root's
-    // key, then it lies in left subtree
-    deleteComps++;
+    deleteComparisons++;
     if (key < root->key) {
         root->size--;
         root->left = deleteNode(tree, root->left, key);
     }
-
-        // If the key to be deleted is
-        // greater than the root's
-        // key, then it lies in right subtree
     else {
-        deleteComps++;
+        deleteComparisons++;
         if (key > root->key) {
             root->size--;
             root->right = deleteNode(tree, root->right, key);
         } else {
-            // node has no child
-            deleteComps++;
+            deleteComparisons++;
             if (root->left == tree->NIL and root->right == tree->NIL)
                 return tree->NIL;
-
-                // node with only one child or no child
             else {
-                deleteComps++;
+                deleteComparisons++;
                 if (root->left == tree->NIL) {
                     struct node *temp = root->right;
-                    deleteAss++;
+                    deleteAssignments++;
                     free(root);
                     return temp;
                 } else {
-                    deleteComps++;
+                    deleteComparisons++;
                     if (root->right == tree->NIL) {
                         struct node *temp = root->left;
-                        deleteAss++;
+                        deleteAssignments++;
                         free(root);
                         return temp;
                     }
                 }
             }
-            // node with two children: Get the inorder successor
-            // (smallest in the right subtree)
             struct node *temp = minimum(tree, root->right);
 
-            // Copy the inorder successor's content to this node
             temp->size = root->size--;
             root->key = temp->key;
 
-            // Delete the inorder successor
             root->right = deleteNode(tree, root->right, temp->key);
         }
     }
@@ -307,14 +311,14 @@ void reset() {
     for (int i = 1; i < MAX_SIZE; i++) {
         visited[i] = false;
     }
-    insertComps=0;
-    insertAss=0;
+    insertComparisons=0;
+    insertAssignments=0;
 
-    selectComps=0;
-    selectAss=0;
+    selectComparisons=0;
+    selectAssignments=0;
 
-    deleteComps=0;
-    deleteAss=0;
+    deleteComparisons=0;
+    deleteAssignments=0;
 }
 
 bool checkVisited() {
@@ -376,14 +380,14 @@ void perfo() {
                 node *aux = osSelect(tree->root, temp);
                 tree->root = deleteNode(tree, tree->root, aux->key);
             }
-            p.countOperation("Assignments Insert", n, insertAss);
-            p.countOperation("Comparisons Insert", n, insertComps);
+            p.countOperation("Assignments Insert", n, insertAssignments);
+            p.countOperation("Comparisons Insert", n, insertComparisons);
 
-            p.countOperation("Assignments Select", n, selectAss);
-            p.countOperation("Comparisons Select", n, selectComps);
+            p.countOperation("Assignments Select", n, selectAssignments);
+            p.countOperation("Comparisons Select", n, selectComparisons);
 
-            p.countOperation("Assignments Delete", n, deleteAss);
-            p.countOperation("Comparisons Delete", n, deleteComps);
+            p.countOperation("Assignments Delete", n, deleteAssignments);
+            p.countOperation("Comparisons Delete", n, deleteComparisons);
         }
         reset();
     }
