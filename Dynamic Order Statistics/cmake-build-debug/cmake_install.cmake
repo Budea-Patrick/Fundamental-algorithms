@@ -1,4 +1,4 @@
-# Install script for directory: D:/Facultate/Anul 2/Semestrul 1/AF/Lab7/Dynamic Order Statistics
+# Install script for directory: D:/Facultate/Anul 2/Semestrul 1/AF/Git/Fundamental-algorithms/Dynamic Order Statistics
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "D:/Facultate/Anul 2/Semestrul 1/AF/Lab7/Dynamic Order Statistics/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "D:/Facultate/Anul 2/Semestrul 1/AF/Git/Fundamental-algorithms/Dynamic Order Statistics/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "D:/Facultate/Anul 2/Semestrul 1/AF/Lab7/Dynamic Order Statistics/main.cpp" "D:/Facultate/Anul 2/Semestrul 1/AF/Lab7/Dynamic Order Statistics/cmake-build-debug/CMakeFiles/Dynamic_Order_Statistics.dir/main.cpp.obj"
+  "D:/Facultate/Anul 2/Semestrul 1/AF/Git/Fundamental-algorithms/Dynamic Order Statistics/main.cpp" "D:/Facultate/Anul 2/Semestrul 1/AF/Git/Fundamental-algorithms/Dynamic Order Statistics/cmake-build-debug/CMakeFiles/Dynamic_Order_Statistics.dir/main.cpp.obj"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

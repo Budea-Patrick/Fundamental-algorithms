@@ -1,5 +1,5 @@
 /*
- * Building the tree requires O(logn) time
+ * Building the tree requires O(logn) time for each new element => nlogn
  * To maintain the RB tree property we call the auxiliary procedure to recolour nodes apply rotations when necessary
  * These operations require at worst O(logn) time but on average it is being done in constant time.
  *
@@ -14,6 +14,8 @@
  * the other operations like insert and delete.
  *
  * The tree is a self-balancing one which means the height of the tree is kept under control during the operations, but this aspect requires additional operations
+ *
+ * RB tree properties: every node is either black or red, the root is black, no adjacent red nodes, every path from a node to any NIL nodes has the same number of black nodes
  *
  * */
 
